@@ -127,7 +127,10 @@ function onPageChange(pageInfo) {
   loadData()
 }
 
-async function loadData() {
+async function loadData(resetCurrentPage) {
+  if (resetCurrentPage) {
+    pagination.current = 1
+  }
   loading.value = true
   if (filter.enrollTime.length === 0) {
     filter.enrollStartTime = null
@@ -267,9 +270,9 @@ onMounted(async () => {
       <div class="flex flex-gap2 mb-4 justify-between">
         <div class="flex flex-gap2">
           <t-date-range-picker placeholder="请选择报名时间" v-model="filter.enrollTime" clearable class="w-70"
-                               @change="loadData"/>
+                               @change="loadData(true)"/>
           <t-select label="是否已沟通: " v-model="filter.hasConnected" class="w-45" placeholder="请选择"
-                    @change="loadData">
+                    @change="loadData(true)">
             <t-option :value="null" label="全部"/>
             <t-option :value="true" label="已沟通"/>
             <t-option :value="false" label="未沟通"/>
@@ -282,13 +285,13 @@ onMounted(async () => {
           </t-input>
           <t-input v-model="filter.workerName" clearable class="w-40" label="姓名: "
                    placeholder="请输入"
-                   @enter="loadData">
+                   @enter="loadData(true)">
             <template #suffixIcon>
               <search-icon/>
             </template>
           </t-input>
           <t-input v-model="filter.workerMobile" clearable class="w-45" label="手机: "
-                   placeholder="请输入" @enter="loadData">
+                   placeholder="请输入" @enter="loadData(true)">
             <template #suffixIcon>
               <search-icon/>
             </template>

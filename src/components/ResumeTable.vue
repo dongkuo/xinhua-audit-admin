@@ -239,7 +239,10 @@ function onAppendixExportBtnClick() {
   downloadFile(url)
 }
 
-async function _loadData() {
+async function _loadData(resetCurrentPage) {
+  if(resetCurrentPage) {
+    pagination.current = 1
+  }
   loading.value = true
   const data = await props.loadData({..._filter, page: pagination.current, size: pagination.pageSize})
   list.value = data.list
@@ -293,7 +296,7 @@ onMounted(async () => {
     <!--工具栏-->
     <div class="flex flex-row mb-4">
       <t-input v-model="_filter.userId" clearable class="user-id-input" label="用户id: " placeholder="请输入用户id"
-               type="number" @enter="_loadData">
+               type="number" @enter="_loadData(true)">
         <template #suffixIcon>
           <search-icon/>
         </template>

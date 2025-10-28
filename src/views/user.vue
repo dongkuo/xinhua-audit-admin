@@ -44,7 +44,10 @@ function onPageChange(pageInfo) {
   loadData()
 }
 
-async function loadData() {
+async function loadData(resetCurrentPage) {
+  if (resetCurrentPage) {
+    pagination.current = 1
+  }
   loading.value = true
   const data = (await api.pageUser({id: filter.id, page: pagination.current, size: pagination.pageSize})).data
   list.value = data.list
@@ -63,7 +66,7 @@ onMounted(async () => {
     <FaPageMain>
       <div class="mb-4">
         <t-input class="w-50" v-model="filter.id" clearable label="用户id: " placeholder="请输入用户id"
-                 type="number" @enter="loadData">
+                 type="number" @enter="loadData(true)">
           <template #suffixIcon>
             <search-icon/>
           </template>
