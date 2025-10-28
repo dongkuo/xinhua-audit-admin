@@ -43,6 +43,14 @@ const routes: RouteRecordRaw = {
       },
     },
     {
+      path: 'enroll',
+      name: 'enroll',
+      component: () => import("@/views/enroll.vue"),
+      meta: {
+        title: '报名情况',
+      },
+    },
+    {
       path: 'study_file',
       name: 'study_file',
       component: () => import("@/views/study_file.vue"),

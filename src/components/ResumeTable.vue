@@ -73,17 +73,17 @@ const columns = ref([
     }
   },
   {
-    colKey: 'requiredJobKinds', title: '项目经历', width: 150, ellipsis: true, cell: (h, {row}) => {
+    colKey: 'careers', title: '项目经历', width: 150, ellipsis: true, cell: (h, {row}) => {
       return row.careers.length > 0 ? row.careers.map(it => dictStore.getLabel(17, it)).join("、") : "-"
     }
   },
   {
-    colKey: 'requiredJobKinds', title: '擅长项目', width: 150, ellipsis: true, cell: (h, {row}) => {
+    colKey: 'skills', title: '擅长项目', width: 150, ellipsis: true, cell: (h, {row}) => {
       return row.skills.length > 0 ? row.skills.map(it => dictStore.getLabel(18, it)).join("、") : "-"
     }
   },
   {
-    colKey: 'requiredJobKinds', title: '资格证书', width: 150, ellipsis: true, cell: (h, {row}) => {
+    colKey: 'certs', title: '资格证书', width: 150, ellipsis: true, cell: (h, {row}) => {
       return row.certs.length > 0 ? row.certs.map(it => dictStore.getLabel(8, it)).join("、") : "-"
     }
   },

@@ -46,7 +46,7 @@ const columns = ref([
         theme = 'danger'
         label = '未通过'
       }
-      return (<t-tag theme={theme} variant="light">{label}</t-tag>)
+      return (<t-tag theme={theme} variant="light-outline">{label}</t-tag>)
     }
   },
   {colKey: 'createTime', title: '创建时间', width: 170, align: 'center'},

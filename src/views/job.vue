@@ -307,7 +307,7 @@ onMounted(async () => {
         <!---->
         <div class="flex gap-x-4">
           <t-form-item class="flex-1" label="工作地点">
-            <t-cascader v-model="submitFormData.location" :options="dictStore.getOptions(-1)"
+            <t-cascader v-model="submitFormData.location" check-strictly :options="dictStore.getOptions(-1)"
                         placeholder="请选择工作地点"/>
           </t-form-item>
           <t-form-item class="flex-1" label="项目时间">

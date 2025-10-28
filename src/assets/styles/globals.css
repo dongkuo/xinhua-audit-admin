@@ -78,3 +78,13 @@ body {
 textarea {
   font-family: inherit;
 }
+
+.t-input__prefix {
+  color: #555;
+}
+
+.t-table thead td,
+.t-table th {
+  font-weight: bold;
+  color: #333;
+}

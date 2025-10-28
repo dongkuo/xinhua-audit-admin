@@ -70,6 +70,24 @@ export default {
     size: number
   }) => api.post('/job/page', data),
 
+  // 分页查询报名信息
+  pageEnroll: (data: {
+    page: number
+    size: number,
+    enrollStartTime: string
+    enrollEndTime: string
+    hasConnected: string
+    jobTitle: string
+    workerName: string
+    workerMobile: string
+  }) => api.post('/worker_enroll/page', data),
+
+  // 修改报名信息是否沟通
+  updateEnrollHasConnected: (data: {
+    id: number,
+    hasConnected: boolean
+  }) => api.post('/worker_enroll/updateHasConnected', data),
+
   // 分页查询资料
   pageStudyFile: (data: {
     page: number
