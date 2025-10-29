@@ -2,7 +2,7 @@
 import {ref} from 'vue'
 import api from '@/api/modules/api'
 import {useDictStore} from '@/store/modules/dict'
-import {AddIcon, DownloadIcon} from "tdesign-icons-vue-next"
+import {AddIcon, DownloadIcon, SearchIcon} from "tdesign-icons-vue-next"
 import {reset} from '@/utils/object'
 import ResumeTable from "@/components/ResumeTable.vue";
 import {downloadFile} from "@/utils/dom.js";
@@ -17,49 +17,12 @@ const size = ref('small')
 const showHeader = ref(true)
 
 const loading = ref(false)
-const filter = ref({userId: null})
+const filter = reactive({id: null, title: null, status: null})
 const list = ref([])
 const pagination = reactive({defaultCurrent: 1, defaultPageSize: 10, pageSizeOptions: [10, 20, 50, 100], total: 0})
 
 const columns = ref([
-  {colKey: 'id', title: '项目id', width: 70},
-  {colKey: 'title', title: '标题', width: 170, ellipsis: true},
-  {colKey: 'content', title: '内容', width: 170, ellipsis: true,},
-  {colKey: 'salary', title: '薪资', width: 130},
-  {
-    colKey: 'type', title: '工作类型', cell: (h, {row}) => {
-      return dictStore.getLabel(1, row.type)
-    },
-  },
-  {
-    colKey: 'kind', title: '职位名称', cell: (h, {row}) => {
-      return dictStore.getLabel(2, row.kind)
-    },
-  },
-  // {
-  //   colKey: 'edu', title: '学历要求', cell: (h, {row}) => {
-  //     return dictStore.getLabel(3, row.edu)
-  //   },
-  // },
-  {
-    colKey: 'exp', title: '工作经验要求', width: 120, cell: (h, {row}) => {
-      return dictStore.getLabel(4, row.exp)
-    },
-  },
-  {colKey: 'number', title: '招聘人数', width: 80},
-  {
-    colKey: 'location', title: '工作地点', width: 170, cell: (h, {row}) => {
-      return dictStore.getLabel(-1, row.location)
-    },
-  },
-  {colKey: 'enrollNumber', title: '报名人数', width: 80},
-  {
-    colKey: 'realEnrollNumber', title: '实际报名人数', align: "center", width: 120, cell: (h, {row}) => {
-      return (<t-button theme="primary" variant="text"
-                        onClick={() => onRealEnrollNumberBtnClick(row)}>{row.realEnrollNumber}</t-button>)
-    }
-  },
-  // {colKey: 'readNumber', title: '阅读次数', width: 80},
+  {colKey: 'id', title: '项目id', width: 70, align: "center"},
   {
     colKey: 'status', title: '项目状态', align: 'center', cell: (h, {row}) => {
       let theme
@@ -77,6 +40,43 @@ const columns = ref([
       return (<t-tag theme={theme} variant="light-outline">{label}</t-tag>)
     },
   },
+  {colKey: 'title', title: '标题', width: 170, ellipsis: true},
+  {colKey: 'content', title: '内容', width: 170, ellipsis: true,},
+  {colKey: 'salary', title: '薪资', width: 130},
+  {
+    colKey: 'type', title: '工作类型', align: "center", cell: (h, {row}) => {
+      return dictStore.getLabel(1, row.type)
+    },
+  },
+  {
+    colKey: 'kind', title: '职位名称', align: "center", cell: (h, {row}) => {
+      return dictStore.getLabel(2, row.kind)
+    },
+  },
+  // {
+  //   colKey: 'edu', title: '学历要求', cell: (h, {row}) => {
+  //     return dictStore.getLabel(3, row.edu)
+  //   },
+  // },
+  {
+    colKey: 'exp', title: '工作经验要求', align: "center", width: 120, cell: (h, {row}) => {
+      return dictStore.getLabel(4, row.exp)
+    },
+  },
+  {colKey: 'number', title: '招聘人数', width: 80, align: "center"},
+  {
+    colKey: 'location', title: '工作地点', width: 170, cell: (h, {row}) => {
+      return dictStore.getLabel(-1, row.location)
+    },
+  },
+  {colKey: 'enrollNumber', title: '报名人数', align: "center", width: 80},
+  {
+    colKey: 'realEnrollNumber', title: '实际报名人数', align: "center", width: 120, cell: (h, {row}) => {
+      return (<t-button theme="primary" variant="text"
+                        onClick={() => onRealEnrollNumberBtnClick(row)}>{row.realEnrollNumber}</t-button>)
+    }
+  },
+  // {colKey: 'readNumber', title: '阅读次数', width: 80},
   // {colKey: 'fromTime', title: '项目起始时间', width: 110},
   // {colKey: 'toTime', title: '项目截止时间', width: 110},
   {colKey: 'timeRange', title: '项目时间', width: 150},
@@ -109,10 +109,13 @@ function onPageChange(pageInfo) {
   loadData()
 }
 
-async function loadData() {
+async function loadData(resetCurrentPage) {
+  if (resetCurrentPage) {
+    pagination.current = 1
+  }
   loading.value = true
   const data = (await api.pageJob({
-    userId: filter.value.userId,
+    ...filter,
     page: pagination.current,
     size: pagination.pageSize
   })).data
@@ -255,7 +258,21 @@ onMounted(async () => {
   <div>
     <FaPageMain>
       <div class="flex flex-gap2 mb-4 justify-between">
-        <div></div>
+        <div class="flex flex-gap2">
+          <t-select v-model="filter.status" class="w-45" label="项目状态: " placeholder="请选择"
+                    @change="loadData(true)">
+            <t-option :value="null" label="全部"/>
+            <t-option :value="0" label="报名中"/>
+            <t-option :value="1" label="进行中"/>
+            <t-option :value="2" label="已结束"/>
+          </t-select>
+          <t-input v-model="filter.title" clearable class="w-70" label="项目标题: " placeholder="请输入"
+                   @enter="loadData(true)">
+            <template #suffixIcon>
+              <search-icon/>
+            </template>
+          </t-input>
+        </div>
         <div class="flex flex-gap2">
           <t-button theme="primary" @click="onAddBtnClick">
             <template #icon>
