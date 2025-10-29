@@ -42,7 +42,7 @@ const columns = ref([
   },
   {colKey: 'title', title: '标题', width: 170, ellipsis: true},
   {colKey: 'content', title: '内容', width: 170, ellipsis: true,},
-  {colKey: 'salary', title: '薪资', width: 130},
+  {colKey: 'salary', title: '薪资', width: 140, ellipsis: true},
   {
     colKey: 'type', title: '工作类型', align: "center", cell: (h, {row}) => {
       return dictStore.getLabel(1, row.type)
