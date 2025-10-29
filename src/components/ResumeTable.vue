@@ -137,10 +137,10 @@ const eduColumns = [
   {colKey: 'toDate', title: '截止时间'},
 ]
 const expColumns = [
-  {colKey: 'company', title: '公司'},
-  {colKey: 'fromDate', title: '开始时间'},
-  {colKey: 'toDate', title: '截止时间'},
-  {colKey: 'jobKind', title: '担任职位'},
+  {colKey: 'company', title: '公司', width: 150},
+  {colKey: 'fromDate', title: '开始时间', width: 120, align: 'center'},
+  {colKey: 'toDate', title: '截止时间', width: 120, align: 'center'},
+  {colKey: 'jobKind', title: '担任职位', width: 150, align: 'center'},
   {colKey: 'jobContent', title: '工作内容'},
 ]
 const certColumns = [
@@ -338,7 +338,7 @@ onMounted(async () => {
     <t-dialog
       v-model:visible="dialogVisible"
       :header="dialogTitle"
-      width="50%"
+      width="70%"
       :cancel-btn="null"
       :confirm-on-enter="true"
       @close="onDialogClose"
