@@ -185,7 +185,7 @@ async function showDialog(type, row) {
     dialogColumn.value = expColumns
     dialogTableList.value = (await api.listWorkerExp(row.userId)).data
   } else if (type === 'appendix') {
-    dialogTitle.value = '工作经历'
+    dialogTitle.value = '附件简历'
     dialogColumn.value = appendixColumns
     dialogTableList.value = (await api.listWorkerAppendix(row.userId)).data
   } else {

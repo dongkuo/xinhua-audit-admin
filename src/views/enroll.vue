@@ -127,6 +127,10 @@ function onPageChange(pageInfo) {
   loadData()
 }
 
+function onAppendixDownloadBtnClick(row) {
+  downloadFile(row.url)
+}
+
 async function loadData(resetCurrentPage) {
   if (resetCurrentPage) {
     pagination.current = 1
@@ -149,9 +153,6 @@ async function loadData(resetCurrentPage) {
   list.value = data.list
   pagination.total = data.total
   loading.value = false
-}
-
-function onUpdateBtnClick(row) {
 }
 
 // 查看弹窗
