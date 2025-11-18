@@ -4,6 +4,7 @@ import {defineStore} from 'pinia'
 import api from '@/api/modules/api'
 
 const area = {
+  "100000": "居家",
   "110000": "北京市",
   "120000": "天津市",
   "130000": "河北省",
