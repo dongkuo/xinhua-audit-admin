@@ -17,7 +17,7 @@ const size = ref('small')
 const showHeader = ref(true)
 
 const loading = ref(false)
-const filter = reactive({id: null, title: null, status: null})
+const filter = reactive({id: null, title: null, status: null, level: null})
 const list = ref([])
 const pagination = reactive({defaultCurrent: 1, defaultPageSize: 10, pageSizeOptions: [10, 20, 50, 100], total: 0})
 
@@ -40,7 +40,22 @@ const columns = ref([
       return (<t-tag theme={theme} variant="light-outline">{label}</t-tag>)
     },
   },
+  {
+    colKey: 'level', title: '是否重点', width: 90, align: 'center', cell: (h, {row}) => {
+      let theme
+      let label
+      if (row.level === 0) {
+        theme = 'default'
+        label = '否'
+      } else if (row.level === 1) {
+        theme = 'primary'
+        label = '是'
+      }
+      return (<t-tag theme={theme} variant="light">{label}</t-tag>)
+    },
+  },
   {colKey: 'title', title: '标题', width: 170, ellipsis: true},
+  {colKey: 'remark', title: '备注', width: 120, ellipsis: true},
   {colKey: 'content', title: '内容', width: 170, ellipsis: true,},
   {colKey: 'salary', title: '薪资', width: 140, ellipsis: true},
   {
@@ -82,7 +97,7 @@ const columns = ref([
   {colKey: 'timeRange', title: '项目时间', width: 150},
   // {colKey: 'publishTime', title: '发布时间', width: 170},
   {
-    colKey: 'visible', title: '项目是否可见', width: 120, align: 'center', cell: (h, {row}) => {
+    colKey: 'visible', title: '是否可见', width: 90, align: 'center', cell: (h, {row}) => {
       const theme = row.visible ? 'primary' : 'danger'
       return (
         <t-tag theme={theme} variant="light">{row.visible ? '是' : '否'}</t-tag>
@@ -125,7 +140,7 @@ async function loadData(resetCurrentPage) {
 }
 
 function onAddBtnClick() {
-  reset(submitFormData)
+  reset(submitFormData, {level: 0})
   submitDialogTitle.value = '新增项目'
   submitDialogVisible.value = true
   submitDialogMode.value = 'add'
@@ -135,6 +150,7 @@ function onUpdateBtnClick(row) {
   submitFormData.id = row.id
   submitFormData.title = row.title
   submitFormData.salary = row.salary
+  submitFormData.level = row.level
   submitFormData.type = row.type
   submitFormData.kind = row.kind
   submitFormData.edu = row.edu
@@ -152,6 +168,7 @@ function onUpdateBtnClick(row) {
   submitFormData.timeRange = row.timeRange
   // submitFormData.publishTime = row.publishTime
   // submitFormData.fromToTime = [row.fromTime, row.toTime]
+  submitFormData.remark = row.remark
   submitDialogMode.value = 'update'
   submitDialogTitle.value = '修改项目'
   submitDialogVisible.value = true
@@ -170,8 +187,10 @@ const submitDialogMode = ref('')
 const submitFormData = reactive({
   id: null,
   title: null,
+  remark: null,
   salary: null,
   type: null,
+  level: 0,
   kind: null,
   edu: null,
   exp: null,
@@ -266,6 +285,12 @@ onMounted(async () => {
             <t-option :value="1" label="进行中"/>
             <t-option :value="2" label="已结束"/>
           </t-select>
+          <t-select v-model="filter.level" class="w-45" label="是否重点: " placeholder="请选择"
+                    @change="loadData(true)">
+            <t-option :value="null" label="全部"/>
+            <t-option :value="0" label="否"/>
+            <t-option :value="1" label="是"/>
+          </t-select>
           <t-input v-model="filter.title" clearable class="w-70" label="项目标题: " placeholder="请输入"
                    @enter="loadData(true)">
             <template #suffixIcon>
@@ -329,7 +354,18 @@ onMounted(async () => {
           </t-form-item>
           <t-form-item class="flex-1" label="项目时间">
             <t-input v-model="submitFormData.timeRange" placeholder="请输入项目时间"/>
-            <!--<t-date-range-picker v-model="submitFormData.fromToTime" placeholder="请选择项目时间"/>-->
+          </t-form-item>
+        </div>
+        <!---->
+        <div class="flex gap-x-4">
+          <t-form-item class="flex-1" label="是否重点">
+            <t-select v-model="submitFormData.level" placeholder="请选择">
+              <t-option :value="0" label="否"/>
+              <t-option :value="1" label="是"/>
+            </t-select>
+          </t-form-item>
+          <t-form-item class="flex-1" label="项目备注">
+            <t-input v-model="submitFormData.remark" placeholder="请输入备注"></t-input>
           </t-form-item>
         </div>
         <!---->
