@@ -1,9 +1,12 @@
 <script setup lang="jsx">
 import {reactive, ref} from 'vue'
 import api from '@/api/modules/api'
-import {useDictStore} from '@/store/modules/dict'
 
 const dictStore = useDictStore()
+const menuStore = useMenuStore()
+
+const route = useRoute()
+
 // 表格配置
 const stripe = ref(false)
 const bordered = ref(true)
@@ -108,6 +111,7 @@ async function onReviewSubmit() {
 
 onMounted(async () => {
   await loadData()
+  await menuStore.removeHint(route.path)
 })
 
 </script>

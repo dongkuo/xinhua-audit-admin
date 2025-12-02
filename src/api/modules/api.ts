@@ -130,4 +130,10 @@ export default {
 
   // 上传文件
   uploadFile: (data: FormData) => api.postForm('/file/upload', data),
+
+  // 查询提示
+  listHint: () => api.get('/hint/list'),
+
+  // 消除提示
+  removeHint: (data: {scene: string}) => api.post('/hint/remove', data),
 }

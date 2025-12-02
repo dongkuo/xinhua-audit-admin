@@ -38,6 +38,29 @@ watch(() => menuStore.actived, (val, oldVal) => {
     }
   }
 })
+
+watch(() => menuStore.hints, (val, oldVal) => {
+  if (settingsStore.mode === 'mobile' || settingsStore.settings.menu.mode === 'side') {
+    if (val > oldVal) {
+      transitionName.value = 'sub-sidebar-y-start'
+    }
+    else {
+      transitionName.value = 'sub-sidebar-y-end'
+    }
+  }
+  else if (settingsStore.settings.menu.mode === 'head') {
+    if (val > oldVal) {
+      transitionName.value = 'sub-sidebar-x-start'
+    }
+    else {
+      transitionName.value = 'sub-sidebar-x-end'
+    }
+  }
+})
+
+onMounted(() => {
+  menuStore.requestMenuHint()
+})
 </script>
 
 <template>

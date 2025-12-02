@@ -7,6 +7,8 @@ defineOptions({
   name: 'SubMenuItem',
 })
 
+const menuStore = useMenuStore()
+
 const props = withDefaults(
   defineProps<SubMenuItemProps>(),
   {
@@ -78,6 +80,7 @@ defineExpose({
               })"
             >
               {{ typeof item.meta?.title === 'function' ? item.meta?.title() : item.meta?.title }}
+              <t-tag v-if="menuStore.hints[item.path]" theme="danger" size="small">更新</t-tag>
             </span>
           </div>
           <i

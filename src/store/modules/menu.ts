@@ -2,6 +2,7 @@ import type { Menu, Route } from '#/global'
 import type { RouteRecordRaw } from 'vue-router'
 import { cloneDeep } from 'es-toolkit'
 import apiApp from '@/api/modules/app'
+import api from '@/api/modules/api'
 import menu from '@/menu'
 import { resolveRoutePath } from '@/utils'
 
@@ -14,6 +15,7 @@ export const useMenuStore = defineStore(
 
     const filesystemMenusRaw = ref<Menu.recordMainRaw[]>([])
     const actived = ref(0)
+    const hints = ref<Record<string, boolean>>({})
 
     // 将原始路由转换成导航菜单
     function convertRouteToMenu(routes: Route.recordMainRaw[]): Menu.recordMainRaw[] {
@@ -202,6 +204,15 @@ export const useMenuStore = defineStore(
       }
     }
 
+    async function requestMenuHint() {
+      hints.value = (await api.listHint()).data.hints
+    }
+
+    async function removeHint(scene: string) {
+      await api.removeHint({scene})
+      hints.value[scene] = false
+    }
+
     return {
       actived,
       allMenus,
@@ -212,6 +223,9 @@ export const useMenuStore = defineStore(
       generateMenusAtFront,
       generateMenusAtBack,
       setActived,
+      hints,
+      requestMenuHint,
+      removeHint,
     }
   },
 )
