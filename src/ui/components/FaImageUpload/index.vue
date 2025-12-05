@@ -138,10 +138,10 @@ function onPreview(index: number) {
 
 function onMove(index: number, direction: 'forward' | 'backward') {
   if (direction === 'forward' && index !== 0) {
-    images.value[index] = images.value.splice(index - 1, 1, images.value[index])[0]
+    images.value[index] = images.value.splice(index - 1, 1, images.value[index]!)[0]!
   }
   if (direction === 'backward' && index !== images.value.length - 1) {
-    images.value[index] = images.value.splice(index + 1, 1, images.value[index])[0]
+    images.value[index] = images.value.splice(index + 1, 1, images.value[index]!)[0]!
   }
 }
 </script>

@@ -17,10 +17,10 @@ export default function useTabbar() {
       if (tabId === activedTabId) {
         const index = tabbarStore.list.findIndex(item => item.tabId === tabId)
         if (index > 0) {
-          router.close(tabbarStore.list[index - 1].fullPath)
+          router.close(tabbarStore.list[index - 1]!.fullPath)
         }
         else {
-          router.close(tabbarStore.list[index + 1].fullPath)
+          router.close(tabbarStore.list[index + 1]!.fullPath)
         }
       }
       else {
@@ -37,7 +37,7 @@ export default function useTabbar() {
     // 如果操作的是非当前路由标签页，则先跳转到指定路由标签页
     if (tabId !== activedTabId) {
       const index = tabbarStore.list.findIndex(item => item.tabId === tabId)
-      router.push(tabbarStore.list[index].fullPath)
+      router.push(tabbarStore.list[index]!.fullPath)
     }
     tabbarStore.removeOtherSide(tabId)
   }
@@ -52,7 +52,7 @@ export default function useTabbar() {
       const index = tabbarStore.list.findIndex(item => item.tabId === tabId)
       const activedIndex = tabbarStore.list.findIndex(item => item.tabId === activedTabId)
       if (activedIndex < index) {
-        router.push(tabbarStore.list[index].fullPath)
+        router.push(tabbarStore.list[index]!.fullPath)
       }
     }
     tabbarStore.removeLeftSide(tabId)
@@ -68,7 +68,7 @@ export default function useTabbar() {
       const index = tabbarStore.list.findIndex(item => item.tabId === tabId)
       const activedIndex = tabbarStore.list.findIndex(item => item.tabId === activedTabId)
       if (activedIndex > index) {
-        router.push(tabbarStore.list[index].fullPath)
+        router.push(tabbarStore.list[index]!.fullPath)
       }
     }
     tabbarStore.removeRightSide(tabId)

@@ -21,7 +21,7 @@ const appRadius = computed<number[]>({
     return [settingsStore.settings.app.radius]
   },
   set(value) {
-    settingsStore.settings.app.radius = value[0]
+    settingsStore.settings.app.radius = value[0] || 0
   },
 })
 

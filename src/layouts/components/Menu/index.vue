@@ -85,13 +85,13 @@ const closeMenu: MenuInjection['closeMenu'] = (index) => {
 
 function setSubMenusActive(index: string) {
   for (const key in subMenus.value) {
-    subMenus.value[key].active = false
+    subMenus.value[key]!.active = false
   }
   subMenus.value[index]?.indexPath.forEach((idx) => {
-    subMenus.value[idx].active = true
+    subMenus.value[idx]!.active = true
   })
   items.value[index]?.indexPath.forEach((idx) => {
-    subMenus.value[idx].active = true
+    subMenus.value[idx]!.active = true
   })
 }
 

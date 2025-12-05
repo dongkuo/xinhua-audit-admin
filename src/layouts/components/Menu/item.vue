@@ -24,7 +24,7 @@ const itemRef = ref<HTMLElement>()
 
 const isActived = computed(() => {
   return props.subMenu
-    ? rootMenu.subMenus[props.uniqueKey.at(-1)!].active
+    ? rootMenu.subMenus[props.uniqueKey.at(-1)!]!.active
     : rootMenu.activeIndex === props.uniqueKey.at(-1)!
 })
 
@@ -80,7 +80,7 @@ defineExpose({
               })"
             >
               {{ typeof item.meta?.title === 'function' ? item.meta?.title() : item.meta?.title }}
-              <t-tag v-if="menuStore.hints[item.path]" theme="danger" size="small">更新</t-tag>
+              <t-tag v-if="menuStore.hints[item.path || '']" theme="danger" size="small">更新</t-tag>
             </span>
           </div>
           <i

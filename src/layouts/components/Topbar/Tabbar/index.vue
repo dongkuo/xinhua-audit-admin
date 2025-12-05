@@ -110,16 +110,16 @@ onMounted(() => {
       switch (handle.key) {
         // 切换到当前标签页紧邻的上一个标签页
         case 'alt+left':
-          if (tabbarStore.list[0].tabId !== activedTabId.value) {
+          if (tabbarStore.list[0]!.tabId !== activedTabId.value) {
             const index = tabbarStore.list.findIndex(item => item.tabId === activedTabId.value)
-            router.push(tabbarStore.list[index - 1].fullPath)
+            router.push(tabbarStore.list[index - 1]!.fullPath)
           }
           break
         // 切换到当前标签页紧邻的下一个标签页
         case 'alt+right':
           if (tabbarStore.list.at(-1)?.tabId !== activedTabId.value) {
             const index = tabbarStore.list.findIndex(item => item.tabId === activedTabId.value)
-            router.push(tabbarStore.list[index + 1].fullPath)
+            router.push(tabbarStore.list[index + 1]!.fullPath)
           }
           break
         // 关闭当前标签页
@@ -138,12 +138,12 @@ onMounted(() => {
         case 'alt+9':
         {
           const number = Number(handle.key.split('+')[1])
-          tabbarStore.list[number - 1]?.fullPath && router.push(tabbarStore.list[number - 1].fullPath)
+          tabbarStore.list[number - 1]?.fullPath && router.push(tabbarStore.list[number - 1]!.fullPath)
           break
         }
         // 切换到最后一个标签页
         case 'alt+0':
-          router.push(tabbarStore.list[tabbarStore.list.length - 1].fullPath)
+          router.push(tabbarStore.list[tabbarStore.list.length - 1]!.fullPath)
           break
       }
     }

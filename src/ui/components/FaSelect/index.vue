@@ -31,7 +31,7 @@ const selectedOption = computed({
     return props.options.find(option => option.value === value.value) ?? props.options[0]
   },
   set(val) {
-    value.value = val.value
+    value.value = val!.value
   },
 })
 </script>
@@ -39,7 +39,7 @@ const selectedOption = computed({
 <template>
   <Select v-model="value" :disabled>
     <SelectTrigger :class="cn('w-[200px]', props.class)">
-      <SelectValue :placeholder="selectedOption.label" />
+      <SelectValue :placeholder="selectedOption!.label" />
     </SelectTrigger>
     <SelectContent>
       <SelectGroup>

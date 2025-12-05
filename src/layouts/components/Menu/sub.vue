@@ -178,8 +178,8 @@ function handleMouseenter() {
       })
     }
     else {
-      const path = props.menu.children ? rootMenu.subMenus[index].indexPath.at(-1)! : rootMenu.items[index].indexPath.at(-1)!
-      rootMenu.openMenu(path, rootMenu.subMenus[path].indexPath)
+      const path = props.menu.children ? rootMenu.subMenus[index]!.indexPath.at(-1)! : rootMenu.items[index]!.indexPath.at(-1)!
+      rootMenu.openMenu(path, rootMenu.subMenus[path]!.indexPath)
     }
   }, 300))
 }

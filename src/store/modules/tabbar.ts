@@ -15,7 +15,7 @@ export const useTabbarStore = defineStore(
       const names: string[] = []
       route.matched.forEach((v, i) => {
         if (i > 0) {
-          v.components?.default.name && names.push(v.components.default.name)
+          v.components?.default?.name && names.push(v.components.default.name)
         }
       })
       const meta = route.matched.at(-1)?.meta

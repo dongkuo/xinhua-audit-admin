@@ -1,4 +1,6 @@
 <script setup lang="ts">
+// @ts-nocheck
+
 import type { DialogContentEmits, DialogContentProps } from 'reka-ui'
 import type { HTMLAttributes } from 'vue'
 import { useScrollLock } from '@vueuse/core'

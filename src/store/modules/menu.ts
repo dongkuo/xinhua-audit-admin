@@ -27,7 +27,7 @@ export const useMenuStore = defineStore(
               meta: {},
               children: [],
             })
-            returnMenus[0].children.push(...convertRouteToMenuRecursive(item.children))
+            returnMenus[0]!.children.push(...convertRouteToMenuRecursive(item.children))
           }
           else {
             const menuItem: Menu.recordMainRaw = {
@@ -83,14 +83,14 @@ export const useMenuStore = defineStore(
     const sidebarMenus = computed<Menu.recordMainRaw['children']>(() => {
       return allMenus.value.length > 0
         ? allMenus.value.length > 1
-          ? allMenus.value[actived.value].children
-          : allMenus.value[0].children
+          ? allMenus.value[actived.value]!.children
+          : allMenus.value[0]!.children
         : []
     })
     // 次导航第一层最深路径
     const sidebarMenusFirstDeepestPath = computed(() => {
       return sidebarMenus.value.length > 0
-        ? getDeepestPath(sidebarMenus.value[0])
+        ? getDeepestPath(sidebarMenus.value[0]!)
         : settingsStore.settings.home.fullPath
     })
     function getDeepestPath(menu: Menu.recordRaw, rootPath = '') {
@@ -101,7 +101,7 @@ export const useMenuStore = defineStore(
           retnPath = getDeepestPath(item, resolveRoutePath(rootPath, menu.path))
         }
         else {
-          retnPath = getDeepestPath(menu.children[0], resolveRoutePath(rootPath, menu.path))
+          retnPath = getDeepestPath(menu.children[0]!, resolveRoutePath(rootPath, menu.path))
         }
       }
       else {

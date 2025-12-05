@@ -1,5 +1,5 @@
 // 加载 iconify 图标
-import { downloadAndInstall } from '@/iconify'
+import {downloadAndInstall} from '@/iconify'
 import icons from '@/iconify/index.json'
 // 自定义指令
 import directive from '@/utils/directive'
@@ -31,7 +31,9 @@ if (icons.isOfflineUse) {
 }
 
 const dictStore = useDictStore()
-await dictStore.loadDict()
-dictStore.updateFavicon()
+dictStore.loadDict()
+  .then(_ => {
+    dictStore.updateFavicon()
+  })
 
 app.mount('#app')

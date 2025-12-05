@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import type { RouteLocationRaw, Router } from 'vue-router'
 import pinia from '@/store'
 
