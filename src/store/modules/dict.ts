@@ -428,7 +428,6 @@ export const useDictStore = defineStore('dict', {
     },
     updateFavicon() {
       let $favicon = document.querySelector('link[rel="icon"]')
-      console.log($favicon)
       if ($favicon !== null) {
         $favicon.href = this.getOptions(16)[0].content;
       }

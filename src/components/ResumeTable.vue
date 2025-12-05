@@ -309,17 +309,17 @@ onMounted(async () => {
       </t-input>
       <div class="space-grow"/>
       <div class="flex gap-4">
-        <t-button theme="primary" @click="onAppendixExportBtnClick">
-          <template #icon>
-            <download-icon/>
-          </template>
-          附件简历导出
-        </t-button>
         <t-button theme="primary" @click="onExportBtnClick">
           <template #icon>
             <download-icon/>
           </template>
-          简历导出
+          导出简历
+        </t-button>
+        <t-button theme="primary" @click="onAppendixExportBtnClick">
+          <template #icon>
+            <download-icon/>
+          </template>
+          导出附件简历
         </t-button>
       </div>
     </div>

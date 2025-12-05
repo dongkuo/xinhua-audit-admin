@@ -4,7 +4,8 @@ import api from '@/api/modules/api'
 import {useDictStore} from '@/store/modules/dict'
 import {DownloadIcon, SearchIcon} from "tdesign-icons-vue-next"
 import {downloadFile} from "@/utils/dom.js"
-import { calculateAge } from '@/utils/date.js'
+import {calculateAge} from '@/utils/date.js'
+import qs from 'qs'
 
 const dictStore = useDictStore()
 // 表格配置
@@ -50,7 +51,7 @@ const columns = ref([
       return dictStore.getLabel(5, row.workerProfileGender)
     }
   },
-  {colKey: 'workerProfileBirthday', title: '生日', align: 'center'},
+  {colKey: 'workerProfileBirthday', title: '生日', width: '110', align: 'center'},
   {
     colKey: 'workerProfileEdu', title: '学历', align: 'center', cell: (h, {row}) => {
       return dictStore.getLabel(3, row.workerProfileEdu)
@@ -265,6 +266,13 @@ function onExportBtnClick() {
   downloadFile(url)
 }
 
+function onExportAppendixBtnClick() {
+  const query = qs.stringify({hasConnected: filter.hasConnected}, {skipNulls: true})
+  const url = import.meta.env.VITE_DOWNLOAD_URL_PREFIX + `/worker_enroll/exportAppendix?` + query
+  console.log(url)
+  downloadFile(url)
+}
+
 onMounted(async () => {
   await loadData()
 })
@@ -284,20 +292,20 @@ onMounted(async () => {
             <t-option :value="true" label="已沟通"/>
             <t-option :value="false" label="未沟通"/>
           </t-select>
-          <t-input v-model="filter.jobTitle" clearable class="w-65" label="项目标题: " placeholder="请输入"
+          <t-input v-model="filter.jobTitle" clearable class="w-60" label="项目标题: " placeholder="请输入"
                    @enter="loadData">
             <template #suffixIcon>
               <search-icon/>
             </template>
           </t-input>
-          <t-input v-model="filter.workerName" clearable class="w-40" label="姓名: "
+          <t-input v-model="filter.workerName" clearable class="w-33" label="姓名: "
                    placeholder="请输入"
                    @enter="loadData(true)">
             <template #suffixIcon>
               <search-icon/>
             </template>
           </t-input>
-          <t-input v-model="filter.workerMobile" clearable class="w-45" label="手机: "
+          <t-input v-model="filter.workerMobile" clearable class="w-42" label="手机: "
                    placeholder="请输入" @enter="loadData(true)">
             <template #suffixIcon>
               <search-icon/>
@@ -310,6 +318,12 @@ onMounted(async () => {
               <download-icon/>
             </template>
             导出
+          </t-button>
+          <t-button theme="primary" @click="onExportAppendixBtnClick">
+            <template #icon>
+              <download-icon/>
+            </template>
+            导出附件简历
           </t-button>
         </div>
       </div>
