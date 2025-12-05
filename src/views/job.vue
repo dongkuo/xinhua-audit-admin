@@ -24,7 +24,7 @@ const pagination = reactive({defaultCurrent: 1, defaultPageSize: 10, pageSizeOpt
 const columns = ref([
   {colKey: 'id', title: '项目id', width: 70, align: "center"},
   {
-    colKey: 'status', title: '项目状态', align: 'center', cell: (h, {row}) => {
+    colKey: 'status', title: '项目状态', width: 80, align: 'center', cell: (h, {row}) => {
       let theme
       let label
       if (row.status === 0) {
@@ -41,7 +41,7 @@ const columns = ref([
     },
   },
   {
-    colKey: 'level', title: '是否重点', width: 90, align: 'center', cell: (h, {row}) => {
+    colKey: 'level', title: '是否重点', width: 80, align: 'center', cell: (h, {row}) => {
       let theme
       let label
       if (row.level === 0) {
@@ -54,7 +54,7 @@ const columns = ref([
       return (<t-tag theme={theme} variant="light">{label}</t-tag>)
     },
   },
-  {colKey: 'title', title: '标题', width: 170, ellipsis: true},
+  {colKey: 'title', title: '标题', width: 340, ellipsis: true},
   {colKey: 'remark', title: '备注', width: 120, ellipsis: true},
   {colKey: 'content', title: '内容', width: 170, ellipsis: true,},
   {colKey: 'salary', title: '薪资', width: 140, ellipsis: true},

@@ -3,7 +3,8 @@ import {ref} from 'vue'
 import api from '@/api/modules/api'
 import {useDictStore} from '@/store/modules/dict'
 import {DownloadIcon, SearchIcon} from "tdesign-icons-vue-next"
-import {downloadFile} from "@/utils/dom.js";
+import {downloadFile} from "@/utils/dom.js"
+import { calculateAge } from '@/utils/date.js'
 
 const dictStore = useDictStore()
 // 表格配置
@@ -30,14 +31,19 @@ const columns = ref([
   {colKey: 'jobTitle', title: '项目标题', width: 240, ellipsis: true},
 
   {colKey: 'workerProfileUserId', title: '用户id', align: 'center', width: 70},
+  // {
+  //   colKey: 'workerProfileAvatar', title: '头像', align: 'center', width: 70, cell: (h, {row}) => {
+  //     return (
+  //       <t-avatar image={row.workerProfileAvatar}/>
+  //     );
+  //   },
+  // },
+  {colKey: 'workerProfileName', title: '姓名', width: 80, align: 'center',},
   {
-    colKey: 'workerProfileAvatar', title: '头像', align: 'center', width: 70, cell: (h, {row}) => {
-      return (
-        <t-avatar image={row.workerProfileAvatar}/>
-      );
-    },
+    colKey: 'workerProfileAge', title: '年龄', width: 70, align: 'center', cell: (h, {row}) => {
+      return calculateAge(row.workerProfileBirthday)
+    }
   },
-  {colKey: 'workerProfileName', title: '姓名', align: 'center',},
   {colKey: 'workerProfileMobile', title: '手机', align: 'center', width: '120'},
   {
     colKey: 'workerProfileGender', title: '性别', width: '70', align: 'center', cell: (h, {row}) => {

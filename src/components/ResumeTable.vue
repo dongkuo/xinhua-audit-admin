@@ -4,6 +4,7 @@ import api from '@/api/modules/api'
 import {useDictStore} from '@/store/modules/dict'
 import {DownloadIcon, SearchIcon} from "tdesign-icons-vue-next"
 import {downloadFile} from '@/utils/dom'
+import {calculateAge} from '@/utils/date.js'
 
 const props = defineProps({
   loadData: {
@@ -39,7 +40,12 @@ const columns = ref([
       );
     },
   },
-  {colKey: 'name', title: '姓名'},
+  {colKey: 'name', title: '姓名', width: 80},
+  {
+    colKey: 'age', title: '年龄', width: 70, align: 'center', cell: (h, {row}) => {
+      return calculateAge(row.birthday)
+    }
+  },
   {colKey: 'mobile', title: '手机', width: '120'},
   {
     colKey: 'gender', title: '性别', width: '70', cell: (h, {row}) => {
@@ -48,7 +54,7 @@ const columns = ref([
   },
   {colKey: 'birthday', title: '生日', align: 'center'},
   {
-    colKey: 'edu', title: '学历', cell: (h, {row}) => {
+    colKey: 'edu', title: '学历', align: 'center', cell: (h, {row}) => {
       return dictStore.getLabel(3, row.edu)
     }
   },
@@ -58,7 +64,7 @@ const columns = ref([
     }
   },
   {
-    colKey: 'requiredJobType', title: '工作类型', cell: (h, {row}) => {
+    colKey: 'requiredJobType', title: '工作类型', align: 'center', cell: (h, {row}) => {
       return dictStore.getLabel(1, row.requiredJobType)
     }
   },
@@ -68,7 +74,7 @@ const columns = ref([
     }
   },
   {
-    colKey: 'pastJobLevel', title: '过往最高岗位', width: 120, cell: (h, {row}) => {
+    colKey: 'pastJobLevel', title: '过往最高岗位', align: 'center', width: 120, cell: (h, {row}) => {
       return dictStore.getLabel(7, row.pastJobLevel)
     }
   },
@@ -240,7 +246,7 @@ function onAppendixExportBtnClick() {
 }
 
 async function _loadData(resetCurrentPage) {
-  if(resetCurrentPage) {
+  if (resetCurrentPage) {
     pagination.current = 1
   }
   loading.value = true
