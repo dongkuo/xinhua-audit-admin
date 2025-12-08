@@ -35,5 +35,7 @@ dictStore.loadDict()
   .then(_ => {
     dictStore.updateFavicon()
   })
+  .finally(() => {
+    app.mount('#app')
+  })
 
-app.mount('#app')
