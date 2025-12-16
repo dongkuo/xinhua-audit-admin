@@ -55,7 +55,10 @@ export default {
   }) => api.post('/worker_profile/page', data),
 
   // 修改简历
-  updateWorkerProfile: (data: { enrollNumber: number }) => api.post('/worker_profile/update', data),
+  updateWorkerProfile: (data: {
+    enrollNumber: number,
+    distrustful: boolean
+  }) => api.post('/worker_profile/update', data),
 
   // 分页查询招聘
   pageBossJob: (data: {
@@ -135,5 +138,5 @@ export default {
   listHint: () => api.get('/hint/list'),
 
   // 消除提示
-  removeHint: (data: {scene: string}) => api.post('/hint/remove', data),
+  removeHint: (data: { scene: string }) => api.post('/hint/remove', data),
 }

@@ -27,7 +27,7 @@ const size = ref('small')
 const showHeader = ref(true)
 
 const loading = ref(false)
-const _filter = reactive({userId: null})
+const _filter = reactive({userId: null, mobile: null})
 const list = ref([])
 const pagination = reactive({defaultCurrent: 1, defaultPageSize: 10, pageSizeOptions: [10, 20, 50, 100], total: 0})
 
@@ -40,15 +40,24 @@ const columns = ref([
       );
     },
   },
-  {colKey: 'name', title: '姓名', width: 80},
+  {
+    colKey: 'name', title: '姓名', width: 100, cell: (h, {row}) => {
+      return (
+        <>
+          <span class="mr-2">{row.name}</span>
+          <t-tag v-show={row.distrustful} size="small" variant="light" theme="warning">失信</t-tag>
+        </>
+      );
+    },
+  },
   {
     colKey: 'age', title: '年龄', width: 70, align: 'center', cell: (h, {row}) => {
       return calculateAge(row.birthday)
     }
   },
-  {colKey: 'mobile', title: '手机', width: '120'},
+  {colKey: 'mobile', title: '手机', align: 'center', width: '120'},
   {
-    colKey: 'gender', title: '性别', width: '70', cell: (h, {row}) => {
+    colKey: 'gender', title: '性别', width: '70', align: 'center', cell: (h, {row}) => {
       return dictStore.getLabel(5, row.gender)
     }
   },
@@ -118,10 +127,23 @@ const columns = ref([
   {
     colKey: 'action',
     title: '操作',
-    fixed: 'right',
+    align: 'center',
+    width: 180,
     cell: (h, {row}) => {
-      return (<t-button theme="primary" size="small"
-                        onClick={() => onShowUpdateDialogBtnClick(row)}>修改报名数</t-button>)
+      return (
+        <>
+          {
+            <t-popconfirm content={row.distrustful ? '确认取消失信吗' : '确认标记失信吗'} onConfirm={() => onToggleDistrustful(row)}>
+              <t-button theme={row.distrustful ? 'primary' : 'danger'} size="small">
+                {row.distrustful ? '取消失信' : '标记失信'}
+              </t-button>
+            </t-popconfirm>
+          }
+          <t-button class="ml-2" theme="primary" size="small" onClick={() => onShowUpdateDialogBtnClick(row)}>
+            修改报名数
+          </t-button>
+        </>
+      )
     }
   }
 ])
@@ -175,6 +197,8 @@ const appendixColumns = [
     }
   }
 ]
+
+const distrustfulPopconfirm = ref(false)
 
 const dialogTableList = ref([])
 
@@ -270,7 +294,7 @@ const updateDialogVisible = ref(false)
 const updateDialogLoading = ref(false)
 const updateDialogFormData = reactive({
   id: null,
-  enrollNumber: null
+  enrollNumber: null,
 })
 
 function onShowUpdateDialogBtnClick(row) {
@@ -284,6 +308,11 @@ async function onUpdateDialogSubmit() {
   await api.updateWorkerProfile(updateDialogFormData)
   updateDialogLoading.value = false
   updateDialogVisible.value = false
+  await _loadData()
+}
+
+async function onToggleDistrustful(row) {
+  await api.updateWorkerProfile({id: row.id, distrustful: !row.distrustful})
   await _loadData()
 }
 
@@ -301,8 +330,14 @@ onMounted(async () => {
   <div>
     <!--工具栏-->
     <div class="flex flex-row mb-4">
-      <t-input v-model="_filter.userId" clearable class="user-id-input" label="用户id: " placeholder="请输入用户id"
-               type="number" @enter="_loadData(true)">
+      <t-input v-model="_filter.userId" clearable class="w-12em m-r4" label="用户id: " placeholder="请输入用户id"
+               @enter="_loadData(true)">
+        <template #suffixIcon>
+          <search-icon/>
+        </template>
+      </t-input>
+      <t-input v-model="_filter.mobile" clearable class="w-15em" label="手机号: " placeholder="请输入手机号"
+               @enter="_loadData(true)">
         <template #suffixIcon>
           <search-icon/>
         </template>
@@ -384,10 +419,6 @@ onMounted(async () => {
   flex-direction: row;
   gap: 16px;
   margin: 16px 0
-}
-
-.user-id-input {
-  width: 200px;
 }
 
 .space-grow {

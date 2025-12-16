@@ -39,7 +39,16 @@ const columns = ref([
   //     );
   //   },
   // },
-  {colKey: 'workerProfileName', title: '姓名', width: 80, align: 'center',},
+  {
+    colKey: 'workerProfileName', title: '姓名', width: 100, cell: (h, {row}) => {
+      return (
+        <>
+          <span class="mr-2">{row.workerProfileName}</span>
+          <t-tag v-show={row.workerProfileDistrustful} size="small" variant="light" theme="warning">失信</t-tag>
+        </>
+      );
+    }
+  },
   {
     colKey: 'workerProfileAge', title: '年龄', width: 70, align: 'center', cell: (h, {row}) => {
       return calculateAge(row.workerProfileBirthday)
@@ -267,7 +276,24 @@ function onExportBtnClick() {
 }
 
 function onExportAppendixBtnClick() {
-  const query = qs.stringify({hasConnected: filter.hasConnected}, {skipNulls: true})
+  // {enrollTime: [], hasConnected: null, jobTitle: null, workerName: null, workerMobile: null}
+  if (filter.enrollTime.length === 0) {
+    filter.enrollStartTime = null
+    filter.enrollEndTime = null
+  } else if (filter.enrollTime.length > 1) {
+    filter.enrollStartTime = filter.enrollTime[0] + " 00:00:00"
+    filter.enrollEndTime = filter.enrollTime[1] + " 23:59:59"
+  } else if (filter.enrollTime.length > 0) {
+    filter.enrollStartTime = filter.enrollTime[0] + " 00:00:00"
+  }
+  const query = qs.stringify({
+    enrollStartTime: filter.enrollStartTime,
+    enrollEndTime: filter.enrollEndTime,
+    hasConnected: filter.hasConnected,
+    jobTitle: filter.jobTitle,
+    workerName: filter.workerName,
+    workerMobile: filter.workerMobile,
+  }, {skipNulls: true})
   const url = import.meta.env.VITE_DOWNLOAD_URL_PREFIX + `/worker_enroll/exportAppendix?` + query
   console.log(url)
   downloadFile(url)
