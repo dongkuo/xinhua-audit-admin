@@ -55,6 +55,7 @@ const columns = ref([
     }
   },
   {colKey: 'workerProfileMobile', title: '手机', align: 'center', width: '120'},
+  {colKey: 'reason', title: '适配度', width: '150', ellipsis: true},
   {
     colKey: 'workerProfileGender', title: '性别', width: '70', align: 'center', cell: (h, {row}) => {
       return dictStore.getLabel(5, row.workerProfileGender)
