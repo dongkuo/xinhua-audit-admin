@@ -40,7 +40,7 @@ const columns = ref([
   //   },
   // },
   {
-    colKey: 'workerProfileName', title: '姓名', width: 100, cell: (h, {row}) => {
+    colKey: 'workerProfileName', title: '姓名', width: 110, cell: (h, {row}) => {
       return (
         <>
           <span class="mr-2">{row.workerProfileName}</span>
@@ -129,10 +129,18 @@ const columns = ref([
     }
   },
   {
-    colKey: 'action', title: '操作', fixed: 'right', align: 'center', cell: (h, {row}) => {
+    colKey: 'action', title: '操作', fixed: 'right', align: 'center', width: 180, cell: (h, {row}) => {
       return (
-        <t-button theme={row.hasConnected ? 'danger' : 'primary'} size="small" variant="base"
-                  onClick={() => updateEnrollHasConnected(row)}>{row.hasConnected ? '取消已沟通' : '标记已沟通'}</t-button>
+        <>
+          <t-popconfirm content={row.workerProfileDistrustful ? '确认取消失信吗' : '确认标记失信吗'}
+                        onConfirm={() => onToggleDistrustful(row)}>
+            <t-button theme={row.workerProfileDistrustful ? 'primary' : 'danger'} size="small">
+              {row.workerProfileDistrustful ? '取消失信' : '标记失信'}
+            </t-button>
+          </t-popconfirm>
+          <t-button class="ml-2" theme={row.hasConnected ? 'danger' : 'primary'} size="small" variant="base"
+                    onClick={() => updateEnrollHasConnected(row)}>{row.hasConnected ? '取消已沟通' : '标记已沟通'}</t-button>
+        </>
       )
     }
   },
@@ -267,6 +275,11 @@ function onDialogClose() {
 
 async function updateEnrollHasConnected(row) {
   await api.updateEnrollHasConnected({id: row.id, hasConnected: !row.hasConnected})
+  await loadData()
+}
+
+async function onToggleDistrustful(row) {
+  await api.updateWorkerProfile({id: row.workerProfileId, distrustful: !row.workerProfileDistrustful})
   await loadData()
 }
 

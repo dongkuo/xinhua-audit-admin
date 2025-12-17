@@ -41,7 +41,7 @@ const columns = ref([
     },
   },
   {
-    colKey: 'name', title: '姓名', width: 100, cell: (h, {row}) => {
+    colKey: 'name', title: '姓名', width: 110, cell: (h, {row}) => {
       return (
         <>
           <span class="mr-2">{row.name}</span>
@@ -132,13 +132,12 @@ const columns = ref([
     cell: (h, {row}) => {
       return (
         <>
-          {
-            <t-popconfirm content={row.distrustful ? '确认取消失信吗' : '确认标记失信吗'} onConfirm={() => onToggleDistrustful(row)}>
-              <t-button theme={row.distrustful ? 'primary' : 'danger'} size="small">
-                {row.distrustful ? '取消失信' : '标记失信'}
-              </t-button>
-            </t-popconfirm>
-          }
+          <t-popconfirm content={row.distrustful ? '确认取消失信吗' : '确认标记失信吗'}
+                        onConfirm={() => onToggleDistrustful(row)}>
+            <t-button theme={row.distrustful ? 'primary' : 'danger'} size="small">
+              {row.distrustful ? '取消失信' : '标记失信'}
+            </t-button>
+          </t-popconfirm>
           <t-button class="ml-2" theme="primary" size="small" onClick={() => onShowUpdateDialogBtnClick(row)}>
             修改报名数
           </t-button>
